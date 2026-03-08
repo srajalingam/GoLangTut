@@ -38,4 +38,9 @@ func main() {
 	scores = append(scores, "60") // when we append more than the capacity of the slice, it will create a new slice with double the capacity and copy the old elements to the new slice
 	fmt.Println(scores)
 
+	// iterating over map
+	for key, value := range websites {
+		fmt.Printf("Key: %s, Value: %s\n", key, value)
+	}
+
 }
