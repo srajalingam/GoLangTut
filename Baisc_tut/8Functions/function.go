@@ -23,6 +23,8 @@ func main() {
 
 	fmt.Println(factorial(5))
 
+	fmt.Println(sum(1, 2, 3, 4, 5))
+
 }
 
 // create function as value
@@ -80,4 +82,14 @@ func factorial(n int) int {
 		return 1
 	}
 	return n * factorial(n-1)
+}
+
+//veriadic function to sum numbers
+
+func sum(nums ...int) int {
+	total := 0
+	for _, num := range nums {
+		total += num
+	}
+	return total
 }
