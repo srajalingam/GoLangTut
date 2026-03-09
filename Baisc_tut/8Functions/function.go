@@ -12,6 +12,17 @@ func main() {
 
 	closureFunc := closure()
 	closureFunc()
+
+	closureWithParamFunc := closureWithParam()
+	closureWithParamFunc(2)
+	closureWithParamFunc(3)
+
+	closureWithReturnFunc := closureWithReturn()
+	fmt.Println(closureWithReturnFunc(2))
+	fmt.Println(closureWithReturnFunc(3))
+
+	fmt.Println(factorial(5))
+
 }
 
 // create function as value
@@ -57,4 +68,16 @@ func closureWithReturn() func(int) int {
 		count += x
 		return count
 	}
+}
+
+//func to create recurion factorial
+// bigo: O(n)
+// space complexity: O(n) due to recursive call stack
+//time complexity: O(n) due to recursive calls
+
+func factorial(n int) int {
+	if n == 0 {
+		return 1
+	}
+	return n * factorial(n-1)
 }
