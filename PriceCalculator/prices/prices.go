@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"strconv"
+	"pricecalculator/conversion"
 )
 
 type TaxIncludedPrice struct {
@@ -44,16 +44,11 @@ func (job *TaxIncludedPrice) LoadData() {
 		return
 	}
 
-	prices := make([]float64, len(lines))
-
-	for lineIndex, line := range lines {
-		floatPrice, err := strconv.ParseFloat(line, 64)
-		if err != nil {
-			fmt.Println("Error parsing price:", err)
-			file.Close()
-			return
-		}
-		prices[lineIndex] = floatPrice
+	prices, err := conversion.StringsToFloats(lines)
+	if err != nil {
+		fmt.Println("Error converting strings to floats:", err)
+		file.Close()
+		return
 	}
 	job.InputPrices = prices
 	file.Close()
