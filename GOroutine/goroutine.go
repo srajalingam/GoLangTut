@@ -17,15 +17,21 @@ func slowGreet(val string, doneChan chan bool) {
 }
 
 func main() {
-	done := make(chan bool)
-
-	go greet("Nice to meet you", done)
-	go greet("how are you", done)
-	go slowGreet("How .are ....you", done)
-
-	go greet("hope you reached..", done)
-	<-done // is done
-	<-done
-	<-done
-	<-done
+	//done := make(chan bool)
+	dones := make([]chan bool, 4)
+	dones[0] = make(chan bool)
+	go greet("Nice to meet you", dones[0])
+	dones[1] = make(chan bool)
+	go greet("how are you", dones[1])
+	dones[2] = make(chan bool)
+	go slowGreet("How .are ....you", dones[2])
+	dones[3] = make(chan bool)
+	go greet("hope you reached..", dones[3])
+	// <-done // is done
+	// <-done
+	// <-done
+	// <-done
+	for _, done := range dones {
+		<-done
+	}
 }
