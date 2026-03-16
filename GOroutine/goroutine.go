@@ -25,4 +25,7 @@ func main() {
 
 	go greet("hope you reached..", done)
 	<-done // is done
+	<-done
+	<-done
+	<-done
 }
