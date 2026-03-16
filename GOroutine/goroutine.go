@@ -16,7 +16,7 @@ func slowGreet(val string) {
 
 func main() {
 	go greet("Nice to meet you")
-	greet("how are you")
-	slowGreet("How .are ....you")
-	greet("hope you reached..")
+	go greet("how are you")
+	go slowGreet("How .are ....you")
+	go greet("hope you reached..")
 }
