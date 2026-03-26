@@ -10,3 +10,8 @@ air
 
 
 go get modernc.org/sqlite
+
+any issue with new download add 
+go clean -modcache
+
+go get golang.org/x/crypto/bcrypt
