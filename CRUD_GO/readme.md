@@ -15,3 +15,5 @@ any issue with new download add
 go clean -modcache
 
 go get golang.org/x/crypto/bcrypt
+
+import "github.com/golang-jwt/jwt/v5"
