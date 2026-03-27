@@ -18,6 +18,7 @@ func signUp(context *gin.Context) {
 		return
 	}
 	err = user.Save()
+	fmt.Println(err)
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"message": "Could not cretae user."})
 		return
