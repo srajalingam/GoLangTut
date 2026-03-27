@@ -4,6 +4,7 @@ import (
 	"crud_go/db"
 	"crud_go/utils"
 	"errors"
+	"fmt"
 )
 
 type User struct {
@@ -38,18 +39,20 @@ func (u User) Save() error {
 }
 
 func (u User) ValidateCredentials() error {
-	query := `SELECT password FROM users WHERE email=?`
+	query := `SELECT id,password FROM users WHERE email=?`
 	row := db.DB.QueryRow(query, u.Email)
 
 	var retrievedPassword string
-	err := row.Scan(&retrievedPassword)
+	err := row.Scan(&u.ID, &retrievedPassword)
 	if err != nil {
 		return err
 	}
+	fmt.Println(u)
 	passwordIsValid := utils.CheckPasswordHash(u.Password, retrievedPassword)
 
 	if !passwordIsValid {
 		return errors.New("Credentials invalid")
 	}
+
 	return nil
 }

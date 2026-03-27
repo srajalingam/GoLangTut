@@ -2,6 +2,7 @@ package routes
 
 import (
 	"crud_go/models"
+	"crud_go/utils"
 	"fmt"
 	"net/http"
 
@@ -38,6 +39,14 @@ func login(context *gin.Context) {
 		context.JSON(http.StatusUnauthorized, gin.H{"message": "Could not authenticate user."})
 		return
 	}
-	context.JSON(http.StatusOK, gin.H{"message": "Login Successful!"})
+	fmt.Println(user)
+	token, err := utils.GenerateToken(user.Email, user.ID)
+	fmt.Println(err)
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"message": "Could not authenticate user."})
+		return
+	}
+
+	context.JSON(http.StatusOK, gin.H{"message": "Login Successful!", "token": token})
 
 }
