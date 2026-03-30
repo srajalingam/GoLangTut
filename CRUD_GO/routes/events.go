@@ -2,6 +2,7 @@ package routes
 
 import (
 	"crud_go/models"
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -36,7 +37,7 @@ func getEvent(context *gin.Context) {
 func createEvent(context *gin.Context) {
 
 	var event models.Event
-	err = context.ShouldBindJSON(&event)
+	err := context.ShouldBindJSON(&event)
 
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"message": "Could not parse request data."})
@@ -53,16 +54,27 @@ func createEvent(context *gin.Context) {
 }
 
 func updateEvent(context *gin.Context) {
+	fmt.Println("update event called")
 	eventId, err := strconv.ParseInt(context.Param("id"), 10, 64)
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"message": "Could not parse event id."})
 		return
 	}
-	_, err = models.GetEventByID(eventId)
+
+	userId := context.GetInt64("userId")
+	fmt.Println("userId:", userId)
+	event, err := models.GetEventByID(eventId)
+	fmt.Println("event.UserID:", event.UserID)
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"message": "Could not fetch event."})
 		return
 	}
+
+	if event.UserID != userId {
+		context.JSON(http.StatusUnauthorized, gin.H{"message": "Not authorized to update this event."})
+		return
+	}
+
 	var updatedEvent models.Event
 	err = context.ShouldBindJSON(&updatedEvent)
 
@@ -76,7 +88,7 @@ func updateEvent(context *gin.Context) {
 		context.JSON(http.StatusInternalServerError, gin.H{"message": "Could not fetch event."})
 		return
 	}
-	context.JSON(http.StatusOK, gin.H{"message": "Event updated successfully"})
+	context.JSON(http.StatusOK, gin.H{"message": "Events updated successfully"})
 }
 
 func deletEvent(context *gin.Context) {
