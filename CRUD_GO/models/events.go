@@ -10,12 +10,12 @@ type Event struct {
 	Description string `binding:"required"`
 	Location    string `binding:"required"`
 	DateTime    string `binding:"required"`
-	UserID      int
+	UserID      int64
 }
 
 var events = []Event{}
 
-func (e Event) Save() error {
+func (e *Event) Save() error {
 	//events = append(events, e)
 	query := `
 		INSERT INTO events(name,description,location,date_time,user_id)
