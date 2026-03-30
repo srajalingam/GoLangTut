@@ -102,6 +102,13 @@ func deletEvent(context *gin.Context) {
 		context.JSON(http.StatusInternalServerError, gin.H{"message": "Could not fetch event."})
 		return
 	}
+	userId := context.GetInt64("userId")
+	fmt.Println("userId:", userId)
+	fmt.Println("event.UserID:", event.UserID)
+	if event.UserID != userId {
+		context.JSON(http.StatusUnauthorized, gin.H{"message": "Not authorized to update this event."})
+		return
+	}
 	err = event.Delete()
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"message": "Could not delete event."})
